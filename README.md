@@ -1,4 +1,4 @@
-# 介绍
+## 介绍
 YokoAIBot一款安全稳定零封号的AI + RPA微信机器人，接入Coze、Dify、腾讯元器多家智能体平台。可以实现：
  -  AI员工7*24小时在线自动回复，支持群聊、单聊所有聊天形式；
  - AI智能体24小时自动点赞、评论朋友圈，实现朋友圈关怀；
@@ -6,12 +6,14 @@ YokoAIBot一款安全稳定零封号的AI + RPA微信机器人，接入Coze、Di
  - 自动通过/添加微信好友申请 + 自动拉群 + 自动发送打招呼，代替重复性劳动；
  - 支持多微信账号管理；
 节省50%-80%人力，效率起飞~
-www.yokoagi.com
+</br>
+<a href="https://www.yokoagi.com" target="_blank">官网</a>
 
-# 一键安装包
-https://n2b8xxdgjx.feishu.cn/wiki/Qp0QwmZO4i05QDkF8uhcJ2K9neg
+## 一键安装包
+<a href="https://n2b8xxdgjx.feishu.cn/wiki/Qp0QwmZO4i05QDkF8uhcJ2K9neg" target="_blank">YokoAIBot一键安装包</a>
 
-# 界面
+
+## 界面
 
 1. 首页
 
@@ -26,10 +28,10 @@ https://n2b8xxdgjx.feishu.cn/wiki/Qp0QwmZO4i05QDkF8uhcJ2K9neg
 <img width="664" height="811" alt="Image" src="https://github.com/user-attachments/assets/64127c51-cb3a-47ef-9328-efa8663184e1" />
 
 
-# 功能清单
+## 功能清单
 
 https://n2b8xxdgjx.feishu.cn/wiki/GMr3wY3yEidpCXkDxpBcTP4unUg
 
 
-# 交流
+## 交流
 <img width="360" height="435" alt="Image" src="https://github.com/user-attachments/assets/46003d7e-53e2-468e-a2e4-e4c24bdbb1ac" />
