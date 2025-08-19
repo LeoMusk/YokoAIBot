@@ -29,4 +29,4 @@ https://n2b8xxdgjx.feishu.cn/wiki/GMr3wY3yEidpCXkDxpBcTP4unUg
 
 
 # 交流
-<img width="664" height="811" alt="Image" src="https://github.com/user-attachments/assets/46003d7e-53e2-468e-a2e4-e4c24bdbb1ac" />
+<img width="360" height="435" alt="Image" src="https://github.com/user-attachments/assets/46003d7e-53e2-468e-a2e4-e4c24bdbb1ac" />
