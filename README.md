@@ -8,6 +8,9 @@ YokoAIBot一款安全稳定零封号的AI + RPA微信机器人，接入Coze、Di
 节省50%-80%人力，效率起飞~
 www.yokoagi.com
 
+# 一键安装包
+https://n2b8xxdgjx.feishu.cn/wiki/Qp0QwmZO4i05QDkF8uhcJ2K9neg
+
 # 界面
 
 1. 首页
