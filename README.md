@@ -6,7 +6,7 @@ YokoAIBot一款安全稳定零封号的AI + RPA微信机器人，接入Coze、Di
  - 自动通过/添加微信好友申请 + 自动拉群 + 自动发送打招呼，代替重复性劳动；
  - 支持多微信账号管理；
 节省50%-80%人力，效率起飞~
-[www.yokoagi.com](url)
+www.yokoagi.com
 
 # 界面
 
