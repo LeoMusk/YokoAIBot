@@ -1,8 +1,8 @@
-# YokoWebot 微信自动化兼容改造方案（WeChat 3.9.12 / 4.1.2）
+# YokoWebot 微信自动化兼容改造方案（WeChat 3.9.12 / 4.1.4）
 
 ## 背景与目标
-- 背景：现有自动化基于 `uiautomation` 仅兼容微信 3.9.12 版本；微信 4.1.2 UI 全面变化，需引入开源库 `pyweixin` 实现新版自动化。
-- 目标：在不改变业务逻辑和对外用法的前提下，实现双版本兼容（3.9.12 / 4.1.2），通过接口抽象 + 驱动适配 + 工厂 + 版本检测的架构，逐步迁移，保证最小改动与稳定性。
+- 背景：现有自动化基于 `uiautomation` 仅兼容微信 3.9.12 版本；微信 4.1.4 UI 全面变化。
+- 目标：在不改变业务逻辑和对外用法的前提下，实现双版本兼容（3.9.12 / 4.1.4），通过接口抽象 + 驱动适配 + 工厂 + 版本检测的架构，逐步迁移，保证最小改动与稳定性。
 
 ## 现状架构梳理
 - 核心入口：`WeRobotCore/core/WeChatType.py` 中的 `class WeChat` 体量较大，集成窗口句柄、控件查找、消息/通讯录/群聊/朋友圈/加好友等全流程逻辑，以及 `db_manager`、`account_info`、日志、重试等。
@@ -23,7 +23,7 @@
 - 控件访问：`WeChatType.py` 内部大量使用 `UiaAPI`、`SessionList`、`MsgList`、`SearchBox`、`ButtonControl` 等旧版 UI 控件；外部模块通常不直接触碰这些内部控件，风险较低。
 
 ## 核心问题与挑战
-- 旧版逻辑与 UI 控件强耦合，方法内部包含控件层实现细节，难以直接复用到 4.1.2。
+- 旧版逻辑与 UI 控件强耦合，方法内部包含控件层实现细节，难以直接复用到 4.1.4。
 - 业务层对 `WeChat` 的方法调用广泛，改动一处容易牵一发而动全身。
 - 多实例与账号绑定、数据库管理、重试与日志需保持一致性与稳定性。
 
@@ -38,7 +38,7 @@
 ### 驱动与工厂
 - 驱动实现（新增目录 `WeRobotCore/core/drivers`）：
   - `legacy_uia.py`：旧版 3.9.12 适配器，复用/迁移 `WeChatType.py` 中的控件操作与流程，保留 `UIRetry`、`UiaLogger` 等健壮性工具。
-  - `pyweixin.py`：新版 4.1.2 适配器，使用 `pyweixin`（`WeChatAuto.py` 等）提供的元素操作实现同名接口方法。
+  - `weixin.py`：新版 4.1.2 适配器，使用 `weixin`（`WeChatAuto.py` 等）提供的元素操作实现同名接口方法。
 - 版本检测（新增 `WeRobotCore/core/version_detector.py`）：
   - 探测窗口标题/可执行文件版本，或通过特征控件（旧版 `会话/消息/通讯录` 名称）试探，失败则判定为新版。
   - 返回枚举：`WeChatVersion.V3_9`、`WeChatVersion.V4_1`。
@@ -53,7 +53,7 @@
   - 方法签名/返回结构保持不变，内部逐步委派到驱动实现（先高频方法，逐步覆盖）。
 
 ### 配置与灰度
-- 在配置中引入 `wechat_automation_mode: auto | legacy | pyweixin`：
+- 在配置中引入 `wechat_automation_mode: auto | legacy | weixin`：
   - `auto` 默认通过版本检测选择驱动。
   - 可强制 `legacy` 或 `pyweixin` 以便快速回退或试用。
 
@@ -108,7 +108,7 @@
 
 ### 阶段 1：工厂与版本检测脚手架
 - 新增 `core/version_detector.py` 与 `core/wechat_factory.py`，工厂返回驱动实例。
-- 新增驱动目录与空实现（`drivers/legacy_uia.py`、`drivers/pyweixin.py`），仅包含接口方法签名与 TODO。
+- 新增驱动目录与空实现（`drivers/legacy_uia.py`、`drivers/weixin.py`），仅包含接口方法签名与 TODO。
 - 不改动 `WeChatType.py`；业务完全无感。
 
 ### 阶段 2：高频方法委派（最小面）
@@ -136,12 +136,6 @@
   - 加好友流程（包括备注与打标签）。
   - 朋友圈评论点赞。
 
-## 最小改动保证
-- 保持所有调用点 `from WeRobotCore.core.WeChatType import WeChat` 不变；`WeChat(account_id=...)` 与 `WeChat(window_handle=...)` 用法不变。
-- 保持方法名、参数与返回结构不变。
-- 保留 `db_manager` 与 `account_info` 在 Facade 层，调用方可继续访问。
-- 驱动内部变更对调用方透明；通过工厂与版本检测选择实现。
-
 ## 风险与缓解
 - 新版 UI 变更频繁：封装控件查找与操作于驱动层；尽量通过语义化元素路径避免硬编码名称。
 - 自动化稳定性：统一使用 `UIRetry` 与日志体系；超时与重试策略下沉到驱动。
@@ -153,28 +147,13 @@
 - `WeRobotCore/core/version_detector.py`：版本检测工具。
 - `WeRobotCore/core/wechat_factory.py`：驱动工厂。
 - `WeRobotCore/core/drivers/legacy_uia.py`：旧版驱动实现。
-- `WeRobotCore/core/drivers/pyweixin.py`：新版驱动实现。
+- `WeRobotCore/core/drivers/weixin.py`：新版驱动实现。
 - `WeRobotCore/core/WeChatType.py`：Facade，方法逐步改为委派（对外不变）。
 
 ## 与任务系统/服务的兼容性说明
 - `task_system_v2` 与 `task_system_v3`：所有对 `WeChat` 的调用保持不变。驱动迁移完成后行为一致。
 - `api_server.py`：多实例初始化、账号映射、DB 操作等均留在 Facade 层；无需改动其对 `WeChat` 的用法。
 
-## 验收标准
-- 保持现有 API 与任务在旧版微信（3.9.12）上的全部功能正常。
-- 在新版微信（4.1.2）下，实现以下能力并通过冒烟：
-  - 初始化与账号识别；
-  - 会话搜索与文本消息发送；
-  - 读取消息与滚动加载；
-  - 通讯录与群聊采集并入库；
-  - 加好友与备注；
-  - 群发与朋友圈操作（至少完成基础路径）。
-- 配置 `wechat_automation_mode` 可切换 legacy/pyweixin/auto 并运行稳定。
-
-## 后续维护建议
-- 将新版 UI 的关键元素封装为语义化选择器模块，减少驱动内部硬编码。
-- 为关键流程添加集成测试脚本（可在 headless/演示环境下跑部分流程）。
-- 定期更新 `version_detector` 的策略，以适配新版本微信的细微变化。
-
 ---
+
 本方案以“接口抽象 + 驱动适配 + 工厂 + 版本检测”为核心，优先保证对外 `WeChat` 的调用表面与行为一致，通过 Facade 逐步下沉到具体驱动实现，以最小改动实现双栈兼容与可维护性提升。
