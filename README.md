@@ -16,6 +16,8 @@ Yoko机器人目标是为业务员加100倍杠杆，节省人力，让效率起�
 
 ## api接口文档
 http://api-docs.yokoagi.com
+## sdk v1.6.1
+<a href="https://github.com/LeoMusk/YokoAIBot-wechat-rpa-sdk/releases/tag/v1.6.1">v1.6.1 release</a>
 
 ## 视频演示
 <a href="https://www.bilibili.com/video/BV1NG2GBdECn" target="_blank">快速上手</a>
