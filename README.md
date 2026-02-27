@@ -14,6 +14,9 @@ Yoko机器人目标是为业务员加100倍杠杆，节省人力，让效率起�
 ## 一键安装包
 <a href="https://n2b8xxdgjx.feishu.cn/wiki/Qp0QwmZO4i05QDkF8uhcJ2K9neg" target="_blank">YokoAIBot安装包下载</a>
 
+## api接口文档
+http://api-docs.yokoagi.com
+
 ## 视频演示
 <a href="https://www.bilibili.com/video/BV1NG2GBdECn" target="_blank">快速上手</a>
 
